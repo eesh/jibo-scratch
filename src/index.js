@@ -4,6 +4,7 @@ let jibo = require ('jibo');
 let Status = jibo.bt.Status;
 let routes = require('./routes')
 let express = require('express');
+let cors = require('cors');
 let app = express();
 
 jibo.init('face', function(err) {
@@ -25,6 +26,7 @@ jibo.init('face', function(err) {
 });
 
 function createServer() {
+  app.use(cors());
   routes(app);
   app.listen(3000, (err) => {
     console.log(err);
