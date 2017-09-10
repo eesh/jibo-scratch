@@ -8,6 +8,9 @@
   },
   "dependencies": {
     "behaviorify": "^1.0.0",
+    "body-parser": "^1.18.0",
+    "express": "^4.15.4",
+    "ip": "^1.1.5",
     "jibo": "^3.0.0"
   },
   "license": "UNLICENSED"
