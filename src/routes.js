@@ -61,6 +61,23 @@ function init(app) {
     jibo.animate.setEyeVisible(show);
     res.json({ success : true });
   })
+
+  app.get('/move', (req, res) => {
+    let x = req.query.x;
+    let y = req.query.y;
+    let z = req.query.z;
+    console.log(x);
+    if(x == null || y == null || z == null) {
+      res.json({ success: false, message : 'Missing parameters'});
+      return;
+    }
+    let animate = jibo.animate;
+    let builder = animate.createLookatBuilder();
+    builder.setContinuousMode(false);
+    let target = new animate.THREE.Vector3(x, y, z);
+    let instance = builder.startLookat(target);
+    res.json({success: true});
+  })
 }
 
 module.exports = init;
