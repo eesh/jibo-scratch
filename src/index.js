@@ -20,6 +20,8 @@ jibo.init('face', function() {
             root.update();
         }
     });
+
+    jibo.animate.setEyeVisible(true);
     createServer();
 });
 
