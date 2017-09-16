@@ -1,0 +1,43 @@
+{
+    "1": {
+        "id": 1,
+        "class": "Sequence",
+        "name": "",
+        "options": {},
+        "children": [
+            "d78add1a-bffa-438f-90c2-a776310794bb",
+            "43bddc97-e3aa-4ad7-a7ad-65eff325b5e0"
+        ]
+    },
+    "meta": {
+        "version": 1
+    },
+    "43bddc97-e3aa-4ad7-a7ad-65eff325b5e0": {
+        "id": "43bddc97-e3aa-4ad7-a7ad-65eff325b5e0",
+        "class": "TextToSpeech",
+        "name": "",
+        "options": {
+            "words": "Scratch skill running",
+            "onWord": [
+                "(word) => {",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": 1
+    },
+    "d78add1a-bffa-438f-90c2-a776310794bb": {
+        "id": "d78add1a-bffa-438f-90c2-a776310794bb",
+        "class": "PlayAnimation",
+        "name": "",
+        "options": {
+            "animPath": "eye.keys",
+            "config": [
+                "(animation) => {",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": 1
+    }
+}

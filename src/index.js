@@ -7,12 +7,10 @@ let express = require('express');
 let cors = require('cors');
 let app = express();
 
-jibo.init('face', function(err) {
-    if (err) {
-        return console.error(err);
-    }
+jibo.init('face', function() {
+
     // Load and create the behavior tree
-    let root = jibo.bt.create('../behaviors/main');
+    let root = jibo.bt.create('../behaviors/startup');
     root.start();
 
     // Listen for the jibo main update loop
@@ -29,6 +27,8 @@ function createServer() {
   app.use(cors());
   routes(app);
   app.listen(3000, (err) => {
-    console.log(err);
+    if(err) {
+      console.log(err.message);
+    }
   })
 }
