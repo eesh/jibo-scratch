@@ -8,7 +8,9 @@ function init(app) {
   app.get('/ip', (req, res) => {
     let address = ip.address();
     jibo.tts.speak(address, (err) => {
-      console.log(err);
+      if(err) {
+        res.send(err.message);
+      }
     });
     res.send(address);
   });
@@ -51,13 +53,11 @@ function init(app) {
 
   app.get('/eye', (req, res) => {
     let show = req.query.show;
-    console.log(show);
     if(show == undefined || show == 'false') {
       show = false;
     } else {
       show = true;
     }
-    console.log(show);
     jibo.animate.setEyeVisible(show);
     res.json({ success : true });
   })
@@ -66,7 +66,6 @@ function init(app) {
     let x = req.query.x;
     let y = req.query.y;
     let z = req.query.z;
-    console.log(x);
     if(x == null || y == null || z == null) {
       res.json({ success: false, message : 'Missing parameters'});
       return;
@@ -76,7 +75,22 @@ function init(app) {
     builder.setContinuousMode(false);
     let target = new animate.THREE.Vector3(x, y, z);
     let instance = builder.startLookat(target);
-    res.json({success: true});
+    target.on('TARGET_REACHED', function (eventType, targetInstance) {
+      if (instance == targetInstance) {
+        res.json({success: true});
+      }
+    });
+    target.on('STOPPED', function (eventType, targetInstance) {
+      if (instance == targetInstance) {
+        res.json({success: true});
+
+      }
+    });
+    target.on('CANCELLED', function (eventType, targetInstance) {
+      if (instance == targetInstance) {
+        res.json({success: true});
+      }
+    });
   })
 }
 
