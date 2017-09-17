@@ -81,23 +81,16 @@ function init(app) {
     builder.setContinuousMode(false);
     let target = new animate.THREE.Vector3(x, y, z);
 
-    builder.on(jibo.animate.LookatEventType.STOPPED, function (eventType, targetInstance) {
-      res.json({success: true});
-      return;
-      // builder.off(jibo.animate.LookatEventType.STOPPED, this);
-    });
-    builder.on(jibo.animate.LookatEventType.CANCELLED, function (eventType, targetInstance) {
-      console.log('CANCELLED')
-      res.json({success: true});
-      return;
-      // builder.off(jibo.animate.LookatEventType.CANCELLED, this);
-    });
-    builder.on(jibo.animate.LookatEventType.TARGET_REACHED, function (eventType, targetInstance) {
-      console.log('TARGET_REACHED')
-      res.json({success: true});
+    var callbackListener = function (eventType, targetInstance) {
       builder.off(jibo.animate.LookatEventType.TARGET_REACHED, this);
-      return;
-    });
+      builder.off(jibo.animate.LookatEventType.STOPPED, this);
+      builder.off(jibo.animate.LookatEventType.CANCELLED, this);
+      res.json({success: true});
+    }
+    
+    builder.on(jibo.animate.LookatEventType.STOPPED, callbackListener);
+    builder.on(jibo.animate.LookatEventType.CANCELLED, callbackListener);
+    builder.on(jibo.animate.LookatEventType.TARGET_REACHED, callbackListener);
     console.log("Movement started")
     let instance = builder.startLookat(target);
   })
