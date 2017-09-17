@@ -24,7 +24,7 @@ function init(app) {
       return;
     }
     jibo.tts.speak(sentence, (err) => {
-      console.log(err);
+      console.log('Test Error:'+err);
       res.json({ success : false });
     });
     res.json({ success : true });
@@ -80,11 +80,13 @@ function init(app) {
     let builder = animate.createLookatBuilder();
     builder.setContinuousMode(false);
     let target = new animate.THREE.Vector3(x, y, z);
+    builder.setDOFs(null);
 
     var callbackListener = function (eventType, targetInstance) {
       builder.off(jibo.animate.LookatEventType.TARGET_REACHED, this);
       builder.off(jibo.animate.LookatEventType.STOPPED, this);
       builder.off(jibo.animate.LookatEventType.CANCELLED, callbackListener);
+      console.log(`${eventType}`);
       res.json({success: true});
     }
 
@@ -92,7 +94,7 @@ function init(app) {
     builder.on(jibo.animate.LookatEventType.CANCELLED, callbackListener);
     builder.on(jibo.animate.LookatEventType.TARGET_REACHED, callbackListener);
     console.log("Movement started")
-    let instance = builder.startLookat(target);
+    var instance = builder.startLookat(target);
   })
 
   app.get('/photo', (req, res) => {
