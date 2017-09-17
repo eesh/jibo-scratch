@@ -64,6 +64,7 @@ function init(app) {
   })
 
   app.get('/move', (req, res) => {
+    console.log('Move command received')
     let x = req.query.x;
     let y = req.query.y;
     let z = req.query.z;
@@ -76,12 +77,15 @@ function init(app) {
     builder.setContinuousMode(false);
     let target = new animate.THREE.Vector3(x, y, z);
     builder.on(jibo.animate.LookatEventType.STOPPED, function (eventType, targetInstance) {
+      console.log('STOPPED')
       res.json({success: true});
     });
     builder.on(jibo.animate.LookatEventType.CANCELLED, function (eventType, targetInstance) {
+      console.log('CANCELLED')
       res.json({success: true});
     });
     builder.on(jibo.animate.LookatEventType.TARGET_REACHED, function (eventType, targetInstance) {
+      console.log('TARGET_REACHED')
       res.json({success: true});
     });
     let instance = builder.startLookat(target);
