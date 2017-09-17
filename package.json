@@ -13,7 +13,8 @@
     "cors": "^2.8.4",
     "express": "^4.15.4",
     "ip": "^1.1.5",
-    "jibo": "^3.0.0"
+    "jibo": "^3.0.0",
+    "pixi.js": "^4.5.5"
   },
   "license": "UNLICENSED"
 }
