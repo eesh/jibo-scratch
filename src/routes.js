@@ -28,11 +28,13 @@ function init(app) {
       res.json({ success : false });
     });
     res.json({ success : true });
+    return;
   });
 
   app.get('/blink', (req, res) => {
     jibo.animate.blink();
     res.json({success:true})
+    return;
   });
 
   app.get('/led/color', (req, res) => {
@@ -50,6 +52,7 @@ function init(app) {
     }
     jibo.animate.setLEDColor([red, green, blue]);
     res.json({ success : true });
+    return;
   })
 
   app.get('/eye', (req, res) => {
@@ -61,6 +64,7 @@ function init(app) {
     }
     jibo.animate.setEyeVisible(show);
     res.json({ success : true });
+    return;
   })
 
   app.get('/move', (req, res) => {
@@ -76,18 +80,25 @@ function init(app) {
     let builder = animate.createLookatBuilder();
     builder.setContinuousMode(false);
     let target = new animate.THREE.Vector3(x, y, z);
+
     builder.on(jibo.animate.LookatEventType.STOPPED, function (eventType, targetInstance) {
-      console.log('STOPPED')
       res.json({success: true});
+      return;
+      // builder.off(jibo.animate.LookatEventType.STOPPED, this);
     });
     builder.on(jibo.animate.LookatEventType.CANCELLED, function (eventType, targetInstance) {
       console.log('CANCELLED')
       res.json({success: true});
+      return;
+      // builder.off(jibo.animate.LookatEventType.CANCELLED, this);
     });
     builder.on(jibo.animate.LookatEventType.TARGET_REACHED, function (eventType, targetInstance) {
       console.log('TARGET_REACHED')
       res.json({success: true});
+      builder.off(jibo.animate.LookatEventType.TARGET_REACHED, this);
+      return;
     });
+    console.log("Movement started")
     let instance = builder.startLookat(target);
   })
 
@@ -138,6 +149,7 @@ function init(app) {
       }
       console.log(response);
       res.json({success:true, imgData: body});
+      return;
     }
   })
 
