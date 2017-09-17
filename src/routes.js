@@ -84,10 +84,10 @@ function init(app) {
     var callbackListener = function (eventType, targetInstance) {
       builder.off(jibo.animate.LookatEventType.TARGET_REACHED, this);
       builder.off(jibo.animate.LookatEventType.STOPPED, this);
-      builder.off(jibo.animate.LookatEventType.CANCELLED, this);
+      builder.off(jibo.animate.LookatEventType.CANCELLED, callbackListener);
       res.json({success: true});
     }
-    
+
     builder.on(jibo.animate.LookatEventType.STOPPED, callbackListener);
     builder.on(jibo.animate.LookatEventType.CANCELLED, callbackListener);
     builder.on(jibo.animate.LookatEventType.TARGET_REACHED, callbackListener);
