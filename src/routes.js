@@ -87,18 +87,16 @@ function init(app) {
     let builder = animate.createLookatBuilder();
     builder.setContinuousMode(false);
     let target = new animate.THREE.Vector3(x, y, z);
-    builder.setDOFs(null);
+    builder.setDOFs({jibo.animate.DOFSet.BODY, jibo.animate.DOFSet.EYE});
 
     var callbackListener = function (eventType, targetInstance) {
       builder.off(jibo.animate.LookatEventType.TARGET_REACHED, this);
-      builder.off(jibo.animate.LookatEventType.STOPPED, this);
-      builder.off(jibo.animate.LookatEventType.CANCELLED, callbackListener);
       console.log(`${eventType}`);
-      res.json({success: true});
+      if(!res.headerSent) {
+        res.json({success: true});
+      }
     }
 
-    builder.on(jibo.animate.LookatEventType.STOPPED, callbackListener);
-    builder.on(jibo.animate.LookatEventType.CANCELLED, callbackListener);
     builder.on(jibo.animate.LookatEventType.TARGET_REACHED, callbackListener);
     console.log("Movement started")
     var instance = builder.startLookat(target);
