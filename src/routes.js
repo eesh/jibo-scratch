@@ -2,6 +2,7 @@
 
 let jibo = require('jibo');
 let ip = require('ip');
+let base64Img = require('base64-img');
 
 function init(app) {
 
@@ -85,6 +86,57 @@ function init(app) {
     });
     let instance = builder.startLookat(target);
   })
+
+  app.get('/photo', (req, res) => {
+    let camera = req.query.camera;
+    let nodistortion = req.query.distortion;
+    let resolution = req.query.resolution;
+    if(!camera) {
+      camera = jibo.lps.CameraID.LEFT;
+    } else {
+      if(camera == 'left') {
+        camera = jibo.lps.CameraID.LEFT;
+      } else {
+        camera = jibo.lps.CameraID.RIGHT;
+      }
+    }
+    if(!nodistortion || nodistortion == 'true') {
+      nodistortion = false;
+    } else {
+      nodistortion = true;
+    }
+    if (!resolution || resolution == 'MEDIUM') {
+      resolution = jibo.lps.PhotoRes.MEDIUM;
+    } else {
+      if(resolution == 'SMALL') {
+        resolution = jibo.lps.PhotoRes.SMALL;
+      } else if (resolution == 'LARGE') {
+        resolution = jibo.lps.PhotoRes.LARGE;
+      } else {
+        resolution = jibo.lps.PhotoRes.XLARGE;
+      }
+    }
+
+    jibo.lps.takePhoto(resolution, nodistortion, camera, jibo.lps.PhotoType.FULL, onTakePhoto)
+
+    function onTakePhoto(err, url) {
+      if(err) {
+        res.json({success : false, message : err.message})
+        return
+      }
+      base64Img.requestBase64(url, onConversionComplete);
+    }
+
+    function onConversionComplete(err, response, body) {
+      if(err) {
+        res.json({success : false, message : err.message})
+        return
+      }
+      console.log(response);
+      res.json({success:true, imgData: body});
+    }
+  })
+
 }
 
 module.exports = init;

@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "base64-img": "^1.0.3",
     "behaviorify": "^1.0.0",
     "body-parser": "^1.18.0",
     "cors": "^2.8.4",
