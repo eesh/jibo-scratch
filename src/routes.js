@@ -6,7 +6,7 @@ let base64Img = require('base64-img');
 
 function init(app) {
 
-  app.get('/ip', (req, res) => {
+  app.get('/ip', function (req, res) {
     let address = ip.address();
     jibo.tts.speak(address, (err) => {
       if(err) {
@@ -17,17 +17,24 @@ function init(app) {
   });
 
 
-  app.get('/speak', (req, res) => {
+  app.get('/speak', function (req, res) {
     let sentence = req.query.words;
     if(!sentence) {
-      res.json({ success : false });
+      if(!res.headerSent) {
+        res.json({ success : false });
+      }
       return;
     }
     jibo.tts.speak(sentence, (err) => {
       console.log('Test Error:'+err);
-      res.json({ success : false });
+      if(!res.headerSent) {
+        res.json({ success : false });
+      }
+      return;
     });
-    res.json({ success : true });
+    if(!res.headerSent) {
+      res.json({ success : true });
+    }
     return;
   });
 
@@ -67,7 +74,7 @@ function init(app) {
     return;
   })
 
-  app.get('/move', (req, res) => {
+  app.get('/move', function (req, res)  {
     console.log('Move command received')
     let x = req.query.x;
     let y = req.query.y;
